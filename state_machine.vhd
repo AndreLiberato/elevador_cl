@@ -1,30 +1,29 @@
 ENTITY state_machine IS PORT (
-	bar_recorder_tf		:	IN	BIT_VECTOR(3 DOWNTO 0);
-	bar_counter_sf		:	IN	BIT_VECTOR(3 DOWNTO 0);
-	clk			:	IN	BIT;
-	enable_recorder_tf	:	OUT	BIT;
-	enable_counter_sf	:	OUT	BIT;
-	control_counter_sf	:	OUT	BIT
-);
+	bar_st_r_in	:	IN	BIT_VECTOR(3 DOWNTO 0);
+	bar_st_c_in	:	IN	BIT_VECTOR(3 DOWNTO 0);
+	clock		:	IN	BIT;
+	enable_st_r	:	OUT	BIT;
+	enable_st_c	:	OUT	BIT;
+	control_st_c	:	OUT	BIT	);
 END state_machine;
 
 ARCHITECTURE arch OF state_machine IS
 BEGIN
-	PROCESS(clk, bar_recorder_tf, bar_counter_sf)
+	PROCESS(clock, bar_st_r_in, bar_st_c_in)
 	BEGIN
-		IF (clk'EVENT AND clk='1') THEN
-			IF (bar_recorder_tf > bar_counter_sf) THEN
-				enable_recorder_tf <= '0';
-				enable_counter_sf <= '1';
-				control_counter_sf <= '1';
-			ELSIF (bar_recorder_tf < bar_counter_sf) THEN
-				enable_recorder_tf <= '0';
-				enable_counter_sf <= '1';
-				control_counter_sf <= '0';
+		IF (clock'EVENT AND clock='0') THEN
+			IF (bar_st_r_in > bar_st_c_in) THEN
+				enable_st_r <= '0';
+				enable_st_c <= '1';
+				control_st_c <= '1';
+			ELSIF (bar_st_r_in < bar_st_c_in) THEN
+				enable_st_r <= '0';
+				enable_st_c <= '1';
+				control_st_c <= '0';
 			ELSE 
-				enable_recorder_tf <= '1';
-				enable_counter_sf <= '0';
-				control_counter_sf <= '0';
+				enable_st_r <= '1';
+				enable_st_c <= '0';
+				control_st_c <= '1';
 			END IF;
 		END IF;
 	END PROCESS;

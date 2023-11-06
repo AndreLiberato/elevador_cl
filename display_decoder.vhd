@@ -1,13 +1,12 @@
 ENTITY display_decoder IS PORT (
-	bar_counter_tf	:	IN	BIT_VECTOR(3 DOWNTO 0);
-	bar_display	:	OUT	BIT_VECTOR(6 DOWNTO 0)
-);
+	bar_decoder_in	:	IN	BIT_VECTOR(3 DOWNTO 0);
+	bar_decoder_out	:	OUT	BIT_VECTOR(6 DOWNTO 0)	);
 END display_decoder;
 
 ARCHITECTURE arch OF display_decoder IS
 BEGIN
-	WITH bar_counter_tf SELECT 
-		bar_display <= 
+	WITH bar_decoder_in SELECT 
+		bar_decoder_out <= 
 			"1001111" WHEN "0001",
 			"0010010" WHEN "0010",
 			"0000110" WHEN "0011",
